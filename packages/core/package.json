@@ -1,6 +1,6 @@
 {
   "name": "@float.js/core",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Float.js Core - Ultra Modern Web Framework",
   "type": "module",
   "main": "./dist/index.js",
