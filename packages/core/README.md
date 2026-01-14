@@ -1,0 +1,90 @@
+# Float.js ⚡
+
+> Ultra Modern Web Framework for React
+
+Float.js is a blazing-fast, full-stack React framework with file-based routing, server-side rendering, and an exceptional developer experience.
+
+## Features
+
+- ⚡ **HMR Ultra Rápido** - Hot Module Replacement instantáneo con WebSockets
+- 📁 **File-based Routing** - Rutas automáticas basadas en estructura de carpetas
+- 🖥️ **SSR** - Server-Side Rendering integrado
+- 📡 **API Routes** - Crea APIs con archivos `route.ts`
+- 🤖 **AI Ready** - Soporte nativo para streaming con OpenAI/Anthropic
+- 📊 **Dev Dashboard** - Panel de desarrollo en `/__float`
+
+## Quick Start
+
+```bash
+# Create a new project
+npx create-float my-app
+cd my-app
+
+# Or install in existing project
+npm install @float.js/core react react-dom
+
+# Start development server
+npx float dev
+```
+
+## Project Structure
+
+```
+my-app/
+├── app/
+│   ├── page.tsx          → /
+│   ├── about/
+│   │   └── page.tsx      → /about
+│   ├── blog/
+│   │   └── [slug]/
+│   │       └── page.tsx  → /blog/:slug
+│   └── api/
+│       └── hello/
+│           └── route.ts  → /api/hello
+├── public/
+└── package.json
+```
+
+## Pages
+
+Create React components in the `app/` directory:
+
+```tsx
+// app/page.tsx
+export default function Home() {
+  return <h1>Welcome to Float.js!</h1>
+}
+```
+
+## API Routes
+
+Create API endpoints with `route.ts` files:
+
+```ts
+// app/api/hello/route.ts
+export function GET(request: Request) {
+  return Response.json({ message: 'Hello from Float!' })
+}
+
+export function POST(request: Request) {
+  return Response.json({ status: 'created' }, { status: 201 })
+}
+```
+
+## CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `float dev` | Start development server with HMR |
+| `float build` | Build for production |
+| `float start` | Start production server |
+| `float info` | Show environment information |
+
+## Requirements
+
+- Node.js 18+
+- React 18.2+ or React 19+
+
+## License
+
+MIT © Float.js
