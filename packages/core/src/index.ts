@@ -180,5 +180,49 @@ export {
   type RealtimeOptions,
 } from './realtime/index.js';
 
+// Dev Tools - Visual dashboard for development
+export {
+  devtools,
+  dashboardState,
+  createDevDashboard,
+  createRequestLogger,
+  type RouteInfo,
+  type BuildInfo,
+  type RequestLog,
+  type PerformanceMetrics,
+  type DevDashboardOptions,
+} from './devtools/index.js';
+
+// Image Optimization
+export {
+  image,
+  configureImages,
+  getImageConfig,
+  createImageHandler,
+  floatImageLoader,
+  generateSrcSet,
+  getImageProps,
+  renderImageToString,
+  type ImageConfig,
+  type ImageProps,
+  type OptimizedImage,
+  type StaticImageData,
+} from './image/index.js';
+
+// Edge Middleware
+export {
+  middleware,
+  middlewareHelpers,
+  NextResponse,
+  registerMiddleware,
+  clearMiddleware,
+  createMiddlewareHandler,
+  type MiddlewareRequest,
+  type MiddlewareHandler,
+  type MiddlewareConfig,
+  type NextURL,
+  type GeoData,
+} from './middleware/index.js';
+
 // Client utilities
 export { generateWelcomePage } from './client/welcome-page.js';

@@ -56,6 +56,9 @@ Float.js is built from the ground up for the modern web. It combines the best de
 | Native AI Integration | ✅ Built-in | ❌ Plugin | ❌ Plugin |
 | Type-Safe APIs | ✅ Built-in | ❌ Manual | ❌ Manual |
 | Real-time WebSocket | ✅ Built-in | ❌ Plugin | ❌ Plugin |
+| Dev Dashboard | ✅ Built-in | ❌ None | ❌ None |
+| Edge Middleware | ✅ Built-in | ✅ | ❌ |
+| Image Optimization | ✅ Built-in | ✅ | ❌ Plugin |
 | SSR Streaming | ✅ Native | ✅ | ✅ |
 | Zero Config | ✅ | ❌ | ❌ |
 
@@ -157,6 +160,76 @@ client.emit('chat', { message: 'Hello!' });
 - Rooms & broadcasting
 - Presence tracking
 - Auto-reconnection
+
+### 📊 Dev Dashboard (Next.js Doesn't Have This!)
+
+```tsx
+import { devtools } from '@float/core';
+
+// Access at http://localhost:3000/__float
+// Features:
+// - Real-time request logs
+// - Route visualization
+// - Performance metrics
+// - Build history
+// - Memory usage
+```
+
+- Visual development dashboard
+- Request/response logging
+- Performance monitoring
+- Route inspector
+
+### 🛡️ Edge Middleware
+
+```tsx
+import { NextResponse, middlewareHelpers } from '@float/core';
+
+// Rate limiting
+export const middleware = middlewareHelpers.rateLimit({ 
+  limit: 100, 
+  window: 60 
+});
+
+// Or custom logic
+export function middleware(req) {
+  if (!req.cookies.has('auth')) {
+    return NextResponse.redirect('/login');
+  }
+  return NextResponse.next();
+}
+```
+
+- Request/response interception
+- Built-in helpers (CORS, rate limiting, auth)
+- URL rewriting
+- Cookie management
+
+### 🖼️ Image Optimization
+
+```tsx
+import { image } from '@float/core';
+
+// Configure
+image.configure({
+  domains: ['cdn.example.com'],
+  quality: 80,
+});
+
+// Use in templates
+const imgProps = image.props({
+  src: '/hero.jpg',
+  alt: 'Hero image',
+  width: 1200,
+  height: 600,
+});
+// Returns: src, srcSet, sizes, loading, etc.
+```
+
+- Automatic format conversion (WebP, AVIF)
+- Responsive srcset generation
+- Lazy loading by default
+- Cache optimization
 
 ### 🌊 Streaming SSR
 
@@ -265,10 +338,11 @@ pnpm dev
 - [x] Native AI integration (OpenAI, Anthropic)
 - [x] Type-safe API validation
 - [x] Real-time WebSocket support
+- [x] Dev Dashboard
+- [x] Edge Middleware
+- [x] Image Optimization
 - [ ] Static site generation (SSG)
 - [ ] Incremental static regeneration (ISR)
-- [ ] Image optimization
-- [ ] Edge middleware
 - [ ] Built-in analytics
 
 ## 💬 Community
