@@ -175,7 +175,7 @@ function createProject(projectDir: string, options: ProjectOptions) {
       lint: eslint ? 'eslint . --ext .ts,.tsx' : undefined,
     },
     dependencies: {
-      '@float/core': '^2.0.1',
+      '@float.js/core': '^2.0.1',
       react: '^18.2.0',
       'react-dom': '^18.2.0',
     },
