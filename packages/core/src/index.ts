@@ -224,5 +224,41 @@ export {
   type GeoData,
 } from './middleware/index.js';
 
+// Static Site Generation (SSG) & ISR
+export {
+  ssg,
+  SSGEngine,
+  getSSGEngine,
+  configureSSG,
+  defineStaticPaths,
+  defineStaticProps,
+  createSSGHandler,
+  createRevalidateHandler,
+  type StaticPath,
+  type GetStaticPathsResult,
+  type GetStaticPropsContext,
+  type GetStaticPropsResult,
+  type CachedPage,
+  type SSGConfig,
+  type GenerateResult,
+} from './ssg/index.js';
+
+// Built-in Analytics
+export {
+  analytics,
+  AnalyticsEngine,
+  getAnalytics,
+  configureAnalytics,
+  createAnalyticsMiddleware,
+  createAnalyticsHandler,
+  analyticsClientScript,
+  type PageView,
+  type WebVitals,
+  type CustomEvent,
+  type AnalyticsData,
+  type AnalyticsConfig,
+  type AnalyticsSummary,
+} from './analytics/index.js';
+
 // Client utilities
 export { generateWelcomePage } from './client/welcome-page.js';

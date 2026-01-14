@@ -13,6 +13,8 @@ export default defineConfig([
       'devtools/index': 'src/devtools/index.ts',
       'image/index': 'src/image/index.ts',
       'middleware/index': 'src/middleware/index.ts',
+      'ssg/index': 'src/ssg/index.ts',
+      'analytics/index': 'src/analytics/index.ts',
     },
     format: ['esm'],
     dts: true,

@@ -59,6 +59,8 @@ Float.js is built from the ground up for the modern web. It combines the best de
 | Dev Dashboard | ✅ Built-in | ❌ None | ❌ None |
 | Edge Middleware | ✅ Built-in | ✅ | ❌ |
 | Image Optimization | ✅ Built-in | ✅ | ❌ Plugin |
+| **SSG + ISR** | ✅ Built-in | ✅ | ❌ |
+| **Built-in Analytics** | ✅ Built-in | ❌ None | ❌ None |
 | SSR Streaming | ✅ Native | ✅ | ✅ |
 | Zero Config | ✅ | ❌ | ❌ |
 
@@ -231,6 +233,65 @@ const imgProps = image.props({
 - Lazy loading by default
 - Cache optimization
 
+### 📄 Static Site Generation (SSG + ISR)
+
+```tsx
+import { ssg, defineStaticPaths, defineStaticProps } from '@float/core';
+
+// Define which paths to pre-render
+export const getStaticPaths = defineStaticPaths(async () => ({
+  paths: [
+    { params: { slug: 'hello' } },
+    { params: { slug: 'world' } },
+  ],
+  fallback: 'blocking',
+}));
+
+// Fetch data at build time with ISR
+export const getStaticProps = defineStaticProps(async ({ params }) => ({
+  props: { post: await getPost(params.slug) },
+  revalidate: 60, // Re-generate every 60 seconds
+}));
+
+// On-demand revalidation API
+await ssg.engine().revalidate('/blog/hello', getStaticProps, render);
+```
+
+- Build-time static generation
+- Incremental Static Regeneration
+- On-demand revalidation
+- Memory + disk caching
+
+### 📈 Built-in Analytics (No Third-Party!)
+
+```tsx
+import { analytics } from '@float/core';
+
+// Configure
+analytics.configure({
+  trackVitals: true,
+  hashIPs: true, // GDPR-friendly
+});
+
+// Auto-track pageviews
+app.use(analytics.createMiddleware());
+
+// Track custom events
+analytics.track.event('purchase', { 
+  product: 'Float Pro', 
+  amount: 99 
+});
+
+// Get dashboard at /__float/analytics
+const summary = analytics.engine().getSummary();
+// { pageviews, vitals, sessions, bounceRate... }
+```
+
+- Zero-config Web Vitals (LCP, FCP, CLS)
+- Privacy-focused (no cookies, hash IPs)
+- Real-time dashboard
+- Custom event tracking
+
 ### 🌊 Streaming SSR
 
 ```tsx
@@ -341,9 +402,9 @@ pnpm dev
 - [x] Dev Dashboard
 - [x] Edge Middleware
 - [x] Image Optimization
-- [ ] Static site generation (SSG)
-- [ ] Incremental static regeneration (ISR)
-- [ ] Built-in analytics
+- [x] Static Site Generation (SSG)
+- [x] Incremental Static Regeneration (ISR)
+- [x] Built-in Analytics
 
 ## 💬 Community
 
