@@ -142,5 +142,43 @@ export {
   validators,
 } from './hooks/index.js';
 
+// AI Module - Native AI integration
+export {
+  ai,
+  streamResponse,
+  sseResponse,
+  aiAction,
+  OpenAIProvider,
+  AnthropicProvider,
+  type AIProvider,
+  type ChatOptions,
+  type Message,
+  type AIResponse,
+} from './ai/index.js';
+
+// Type-Safe API Module
+export {
+  f,
+  typedRoute,
+  json,
+  error,
+  redirect,
+  FloatValidationError,
+  type Infer,
+} from './api/index.js';
+
+// Real-time Module - Built-in WebSocket support
+export {
+  FloatRealtime,
+  realtime,
+  getRealtimeServer,
+  createRealtimeClient,
+  type RealtimeClient,
+  type RealtimeMessage,
+  type RealtimeRoom,
+  type PresenceState,
+  type RealtimeOptions,
+} from './realtime/index.js';
+
 // Client utilities
 export { generateWelcomePage } from './client/welcome-page.js';

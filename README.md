@@ -49,13 +49,15 @@ Open [http://localhost:3000](http://localhost:3000) to see your app.
 
 Float.js is built from the ground up for the modern web. It combines the best developer experience with cutting-edge performance.
 
-| Feature | Float.js | Others |
-|---------|----------|--------|
-| Hot Reload | **~50ms** | ~500ms |
-| Build Time | **~100ms** | ~3s |
-| SSR Streaming | ✅ Native | Partial |
-| Zero Config | ✅ | ❌ |
-| AI-Ready | ✅ Built-in | Plugin |
+| Feature | Float.js | Next.js | Remix |
+|---------|----------|---------|-------|
+| Hot Reload | **~50ms** | ~500ms | ~300ms |
+| Build Time | **~100ms** | ~3s | ~2s |
+| Native AI Integration | ✅ Built-in | ❌ Plugin | ❌ Plugin |
+| Type-Safe APIs | ✅ Built-in | ❌ Manual | ❌ Manual |
+| Real-time WebSocket | ✅ Built-in | ❌ Plugin | ❌ Plugin |
+| SSR Streaming | ✅ Native | ✅ | ✅ |
+| Zero Config | ✅ | ❌ | ❌ |
 
 ## ✨ Features
 
@@ -86,6 +88,75 @@ app/
 - Catch-all routes `[...slug]`
 - API routes with `route.ts`
 - Nested layouts
+
+### 🤖 Native AI Integration (No Plugins!)
+
+```tsx
+import { ai, streamResponse } from '@float/core';
+
+// Simple chat
+const response = await ai.chat("Explain quantum computing");
+
+// Streaming in API routes
+export async function POST(req: Request) {
+  const { prompt } = await req.json();
+  return streamResponse(ai.stream(prompt));
+}
+```
+
+- Built-in OpenAI & Anthropic support
+- Streaming responses out of the box
+- Server-Sent Events (SSE)
+- Zero configuration needed
+
+### 🎯 Type-Safe APIs (No Zod Required!)
+
+```tsx
+import { typedRoute, f, json } from '@float/core';
+
+export const POST = typedRoute({
+  body: f.object({
+    name: f.string().min(2),
+    email: f.string().email(),
+    age: f.number().min(18).optional(),
+  }),
+}, async (req) => {
+  const { name, email } = req.validated.body; // Fully typed!
+  return json({ message: `Hello ${name}!` });
+});
+```
+
+- Built-in schema validation
+- Automatic error responses
+- Full TypeScript inference
+- Zero dependencies
+
+### 🔌 Real-time Built-in (No Socket.io Required!)
+
+```tsx
+import { realtime } from '@float/core';
+
+// Server
+const server = realtime.create();
+server.onConnection((client) => {
+  console.log(`${client.id} connected`);
+});
+server.onEvent('chat', (msg, client) => {
+  server.broadcastToRoom('lobby', msg);
+});
+await server.start();
+
+// Client (browser)
+const client = realtime.client({ url: 'ws://localhost:3001/ws' });
+await client.connect();
+client.join('lobby');
+client.emit('chat', { message: 'Hello!' });
+```
+
+- Native WebSocket support
+- Rooms & broadcasting
+- Presence tracking
+- Auto-reconnection
 
 ### 🌊 Streaming SSR
 
@@ -191,11 +262,14 @@ pnpm dev
 - [x] SSR with streaming
 - [x] Hot module replacement
 - [x] TypeScript support
+- [x] Native AI integration (OpenAI, Anthropic)
+- [x] Type-safe API validation
+- [x] Real-time WebSocket support
 - [ ] Static site generation (SSG)
 - [ ] Incremental static regeneration (ISR)
 - [ ] Image optimization
-- [ ] Built-in analytics
 - [ ] Edge middleware
+- [ ] Built-in analytics
 
 ## 💬 Community
 
