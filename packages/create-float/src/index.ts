@@ -165,7 +165,7 @@ function createProject(projectDir: string, options: ProjectOptions) {
   // Create package.json
   const packageJson = {
     name,
-    version: '0.1.0',
+    version: '2.0.1',
     private: true,
     type: 'module',
     scripts: {
@@ -175,7 +175,7 @@ function createProject(projectDir: string, options: ProjectOptions) {
       lint: eslint ? 'eslint . --ext .ts,.tsx' : undefined,
     },
     dependencies: {
-      '@float/core': '^0.1.0',
+      '@float/core': '^2.0.1',
       react: '^18.2.0',
       'react-dom': '^18.2.0',
     },
@@ -635,7 +635,7 @@ export default function HomePage() {
         </div>
         
         <div className="footer">
-          Float.js v0.1.0 — Made with ⚡ for the modern web
+          Float.js v2.0.1 — Made with ⚡ for the modern web
         </div>
       </div>
     </>

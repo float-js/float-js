@@ -699,15 +699,24 @@ export default function HomePage() {
       <nav className="navbar">
         <div className="navbar-inner">
           <a href="/" className="navbar-brand">
-            <svg viewBox="0 0 32 32" fill="none">
+            <svg viewBox="0 0 200 200" fill="none">
               <defs>
-                <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#8b5cf6" />
-                  <stop offset="100%" stopColor="#ec4899" />
+                <linearGradient id="paint0_linear_float" x1="50" y1="145" x2="120" y2="145" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#3B82F6"/>
+                  <stop offset="1" stopColor="#8B5CF6"/>
+                </linearGradient>
+                <linearGradient id="paint1_linear_float" x1="50" y1="100" x2="150" y2="100" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#3B82F6"/>
+                  <stop offset="1" stopColor="#8B5CF6"/>
+                </linearGradient>
+                <linearGradient id="paint2_linear_float" x1="50" y1="55" x2="170" y2="55" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#3B82F6"/>
+                  <stop offset="1" stopColor="#8B5CF6"/>
                 </linearGradient>
               </defs>
-              <circle cx="16" cy="16" r="14" fill="url(#logo-grad)" />
-              <path d="M12 10h8l-2 12h-4l-2-12z" fill="white" opacity="0.9" />
+              <path d="M50 145C50 136.716 56.7157 130 65 130H105C113.284 130 120 136.716 120 145C120 153.284 113.284 160 105 160H65C56.7157 160 50 153.284 50 145Z" fill="url(#paint0_linear_float)"/>
+              <path d="M50 100C50 91.7157 56.7157 85 65 85H135C143.284 85 150 91.7157 150 100C150 108.284 143.284 115 135 115H65C56.7157 115 50 108.284 50 100Z" fill="url(#paint1_linear_float)"/>
+              <path d="M50 55C50 46.7157 56.7157 40 65 40H155C163.284 40 170 46.7157 170 55C170 63.2843 163.284 70 155 70H65C56.7157 70 50 63.2843 50 55Z" fill="url(#paint2_linear_float)"/>
             </svg>
             Float.js
           </a>
@@ -736,6 +745,29 @@ export default function HomePage() {
         <div className="hero-glow" />
         <div className="hero-glow-2" />
         <div className="hero-grid" />
+        
+        {/* Float Logo */}
+        <div style={{ marginBottom: '32px' }}>
+          <svg width="100" height="100" viewBox="0 0 200 200" fill="none">
+            <defs>
+              <linearGradient id="hero-paint0" x1="50" y1="145" x2="120" y2="145" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#3B82F6"/>
+                <stop offset="1" stopColor="#8B5CF6"/>
+              </linearGradient>
+              <linearGradient id="hero-paint1" x1="50" y1="100" x2="150" y2="100" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#3B82F6"/>
+                <stop offset="1" stopColor="#8B5CF6"/>
+              </linearGradient>
+              <linearGradient id="hero-paint2" x1="50" y1="55" x2="170" y2="55" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#3B82F6"/>
+                <stop offset="1" stopColor="#8B5CF6"/>
+              </linearGradient>
+            </defs>
+            <path d="M50 145C50 136.716 56.7157 130 65 130H105C113.284 130 120 136.716 120 145C120 153.284 113.284 160 105 160H65C56.7157 160 50 153.284 50 145Z" fill="url(#hero-paint0)"/>
+            <path d="M50 100C50 91.7157 56.7157 85 65 85H135C143.284 85 150 91.7157 150 100C150 108.284 143.284 115 135 115H65C56.7157 115 50 108.284 50 100Z" fill="url(#hero-paint1)"/>
+            <path d="M50 55C50 46.7157 56.7157 40 65 40H155C163.284 40 170 46.7157 170 55C170 63.2843 163.284 70 155 70H65C56.7157 70 50 63.2843 50 55Z" fill="url(#hero-paint2)"/>
+          </svg>
+        </div>
         
         <a href="/blog/float-1.0" className="hero-badge">
           <span className="hero-badge-new">New</span>

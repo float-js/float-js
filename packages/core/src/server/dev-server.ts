@@ -136,6 +136,29 @@ ${FLOAT_ERROR_OVERLAY}
         return;
       }
 
+      // Serve Dev Dashboard at /__float
+      if (pathname === '/__float' || pathname.startsWith('/__float/')) {
+        const { dashboardState } = await import('../devtools/index.js');
+        
+        // Sync current routes to dashboard
+        dashboardState.routes = routes.map(r => ({
+          path: r.path,
+          type: r.type,
+          file: r.filePath || r.absolutePath,
+          hasLayout: r.layouts && r.layouts.length > 0
+        }));
+        
+        // Use the dashboard handler via middleware pattern
+        const { createDevDashboard } = await import('../devtools/index.js');
+        const handler = createDevDashboard({ path: '/__float' });
+        
+        handler(req, res, () => {
+          res.writeHead(404);
+          res.end('Not Found');
+        });
+        return;
+      }
+
       // Match route
       const { route, params } = matchRoute(pathname, routes);
 

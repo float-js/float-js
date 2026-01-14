@@ -1,6 +1,6 @@
 {
   "name": "float-monorepo",
-  "version": "0.0.1",
+  "version": "2.0.1",
   "private": true,
   "description": "Float.js - Ultra Modern Web Framework",
   "workspaces": [

@@ -487,7 +487,7 @@ export function generateWelcomePage(): string {
     </div>
     
     <div class="footer">
-      Float.js v0.1.0 — Made with ⚡ for the modern web
+      Float.js v2.0.1 — Made with ⚡ for the modern web
     </div>
   </div>
 </body>
