@@ -12,6 +12,7 @@ Float.js is a blazing-fast, full-stack React framework with file-based routing, 
 - 📡 **API Routes** - Crea APIs con archivos `route.ts`
 - 🤖 **AI Ready** - Soporte nativo para streaming con OpenAI/Anthropic
 - 📊 **Dev Dashboard** - Panel de desarrollo en `/__float`
+- 🎨 **Tailwind CSS** - Auto-setup automático con PostCSS
 
 ## Quick Start
 
@@ -68,6 +69,33 @@ export function GET(request: Request) {
 
 export function POST(request: Request) {
   return Response.json({ status: 'created' }, { status: 201 })
+}
+```
+
+## Tailwind CSS
+
+Float.js automatically sets up Tailwind CSS when you run `float dev`. If Tailwind isn't configured, it will:
+
+1. Create `tailwind.config.js`
+2. Create `postcss.config.js`
+3. Create `app/globals.css` with Tailwind directives
+4. Create `app/layout.tsx` to import global styles
+
+Install Tailwind dependencies:
+
+```bash
+npm install -D tailwindcss postcss autoprefixer
+```
+
+Your components will automatically use Tailwind classes:
+
+```tsx
+export default function Home() {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <h1 className="text-4xl font-bold text-blue-600">Hello Float!</h1>
+    </div>
+  )
 }
 ```
 

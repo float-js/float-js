@@ -17,6 +17,8 @@ import { FLOAT_INDICATOR_SCRIPT } from '../client/float-indicator.js';
 import { FLOAT_ERROR_OVERLAY } from '../client/error-overlay.js';
 import { generateWelcomePage } from '../client/welcome-page.js';
 import { generateDocsPage, generateLearnPage, generateExamplesPage } from '../client/docs-pages.js';
+import { processCSS, needsCSSProcessing } from '../build/css-processor.js';
+import { setupTailwind, checkTailwindSetup, getTailwindInstallCommand } from '../build/tailwind-setup.js';
 
 export interface DevServerOptions {
   port: number;
@@ -45,6 +47,20 @@ export async function createDevServer(options: DevServerOptions): Promise<DevSer
     try {
       routes = await scanRoutes(rootDir);
       console.log(pc.dim(`  📁 Found ${routes.length} routes`));
+      
+      // Auto-setup Tailwind if needed
+      const tailwindConfig = checkTailwindSetup(rootDir);
+      if (tailwindConfig.needsSetup) {
+        console.log(pc.yellow('  ⚠️  Tailwind not configured'));
+        const installCmd = getTailwindInstallCommand(rootDir);
+        if (installCmd) {
+          console.log(pc.dim(`  💡 Run: ${installCmd}`));
+          console.log(pc.dim(`  💡 Then: npx float dev`));
+        } else {
+          // Setup files automatically
+          await setupTailwind(rootDir);
+        }
+      }
     } catch (error) {
       console.error(pc.red('Failed to scan routes:'), error);
     }
@@ -128,6 +144,39 @@ ${FLOAT_ERROR_OVERLAY}
         res.writeHead(200, { 'Content-Type': contentType });
         res.end(content);
         return;
+      }
+
+      // Serve CSS files (with processing for Tailwind)
+      if (pathname.endsWith('.css')) {
+        const cssPath = path.join(rootDir, 'app', pathname.replace(/^\//, ''));
+        if (fs.existsSync(cssPath)) {
+          try {
+            const needsProcessing = needsCSSProcessing(cssPath, rootDir);
+            if (needsProcessing) {
+              const result = await processCSS(cssPath, rootDir);
+              res.writeHead(200, { 
+                'Content-Type': 'text/css',
+                'Cache-Control': 'no-cache',
+              });
+              res.end(result.code);
+            } else {
+              const content = fs.readFileSync(cssPath, 'utf-8');
+              res.writeHead(200, { 
+                'Content-Type': 'text/css',
+                'Cache-Control': 'no-cache',
+              });
+              res.end(content);
+            }
+            return;
+          } catch (error) {
+            console.error(pc.red('CSS processing error:'), error);
+            // Fallback to raw CSS
+            const content = fs.readFileSync(cssPath, 'utf-8');
+            res.writeHead(200, { 'Content-Type': 'text/css' });
+            res.end(content);
+            return;
+          }
+        }
       }
 
       // Serve /_float/ internal assets

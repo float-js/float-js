@@ -23,7 +23,7 @@ export default defineConfig([
     clean: true,
     target: 'node18',
     shims: true,
-    external: ['ws'],
+    external: ['ws', 'postcss', 'tailwindcss', 'autoprefixer'],
   },
   // CLI entry (with shebang)
   {
@@ -37,6 +37,7 @@ export default defineConfig([
     clean: false, // Don't clean, other build already did
     target: 'node18',
     shims: true,
+    external: ['postcss', 'tailwindcss', 'autoprefixer'],
     banner: {
       js: '#!/usr/bin/env node',
     },
