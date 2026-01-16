@@ -1,6 +1,6 @@
 {
   "name": "@float.js/core",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "Modern React framework with server-side rendering, file-based routing, and zero-config TypeScript",
   "type": "module",
   "repository": {
