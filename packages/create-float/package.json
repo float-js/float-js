@@ -3,6 +3,15 @@
   "version": "2.2.5",
   "description": "Create Float.js applications with one command",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/float-js/float.js.git",
+    "directory": "packages/create-float"
+  },
+  "homepage": "https://github.com/float-js/float.js#readme",
+  "bugs": {
+    "url": "https://github.com/float-js/float-js/issues"
+  },
   "bin": {
     "create-float": "./dist/index.js"
   },

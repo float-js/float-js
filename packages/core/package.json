@@ -1,8 +1,17 @@
 {
   "name": "@float.js/core",
   "version": "2.2.3",
-  "description": "Float.js Core - Ultra Modern Web Framework",
+  "description": "Modern React framework with server-side rendering, file-based routing, and zero-config TypeScript",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/float-js/float.js.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/float-js/float.js#readme",
+  "bugs": {
+    "url": "https://github.com/float-js/float.js/issues"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
