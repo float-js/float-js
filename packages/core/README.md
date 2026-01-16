@@ -13,6 +13,9 @@ Float.js is a blazing-fast, full-stack React framework with file-based routing, 
 - 🤖 **AI Ready** - Soporte nativo para streaming con OpenAI/Anthropic
 - 📊 **Dev Dashboard** - Panel de desarrollo en `/__float`
 - 🎨 **Tailwind CSS** - Auto-setup automático con PostCSS
+- 🔄 **Layouts** - Layouts anidados con jerarquía automática
+- ⏳ **Loading States** - Loading UI con Suspense boundaries
+- 💾 **Persistent Cache** - Builds 10x más rápidos con caché en disco
 
 ## Quick Start
 
@@ -98,6 +101,41 @@ export default function Home() {
   )
 }
 ```
+
+## Layouts & Loading States
+
+Create shared UI with layouts and loading states:
+
+```tsx
+// app/layout.tsx - Root layout
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <nav>My App</nav>
+        {children}
+      </body>
+    </html>
+  )
+}
+
+// app/dashboard/layout.tsx - Nested layout
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="dashboard">
+      <aside>Sidebar</aside>
+      <main>{children}</main>
+    </div>
+  )
+}
+
+// app/dashboard/loading.tsx - Loading UI
+export default function Loading() {
+  return <div>Loading dashboard...</div>
+}
+```
+
+Layouts are nested automatically: `RootLayout` → `DashboardLayout` → `Page`
 
 ## CLI Commands
 

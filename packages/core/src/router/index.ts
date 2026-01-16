@@ -23,6 +23,10 @@ export interface Route {
   isOptionalCatchAll: boolean;
   /** Nested layouts */
   layouts: string[];
+  /** Loading component path */
+  loading?: string;
+  /** Error boundary path */
+  error?: string;
 }
 
 export interface RouterOptions {
@@ -135,6 +139,40 @@ function findLayouts(routePath: string, allLayouts: Map<string, string>): string
 }
 
 /**
+ * Find loading component for a route (closest ancestor)
+ */
+function findLoading(routePath: string, allLoading: Map<string, string>): string | undefined {
+  const segments = routePath.split('/').filter(Boolean);
+  
+  // Check from most specific to root
+  for (let i = segments.length; i >= 0; i--) {
+    const currentPath = i === 0 ? '/' : '/' + segments.slice(0, i).join('/');
+    if (allLoading.has(currentPath)) {
+      return allLoading.get(currentPath);
+    }
+  }
+  
+  return undefined;
+}
+
+/**
+ * Find error boundary for a route (closest ancestor)
+ */
+function findError(routePath: string, allErrors: Map<string, string>): string | undefined {
+  const segments = routePath.split('/').filter(Boolean);
+  
+  // Check from most specific to root
+  for (let i = segments.length; i >= 0; i--) {
+    const currentPath = i === 0 ? '/' : '/' + segments.slice(0, i).join('/');
+    if (allErrors.has(currentPath)) {
+      return allErrors.get(currentPath);
+    }
+  }
+  
+  return undefined;
+}
+
+/**
  * Scan app directory and build routes
  */
 export async function scanRoutes(
@@ -153,15 +191,24 @@ export async function scanRoutes(
     ignore: ['**/node_modules/**', '**/_*/**'],
   });
 
-  // First pass: collect all layouts
+  // First pass: collect all layouts, loading, errors
   const layoutMap = new Map<string, string>();
+  const loadingMap = new Map<string, string>();
+  const errorMap = new Map<string, string>();
   
   for (const file of files) {
     const type = getRouteType(file);
+    const { urlPath } = filePathToUrlPath(file, '');
+    
     if (type === 'layout') {
-      const { urlPath } = filePathToUrlPath(file, '');
       const layoutPath = urlPath === '/' ? '/' : urlPath.replace(/\/layout$/, '') || '/';
       layoutMap.set(layoutPath, path.join(appDir, file));
+    } else if (type === 'loading') {
+      const loadingPath = urlPath === '/' ? '/' : urlPath.replace(/\/loading$/, '') || '/';
+      loadingMap.set(loadingPath, path.join(appDir, file));
+    } else if (type === 'error') {
+      const errorPath = urlPath === '/' ? '/' : urlPath.replace(/\/error$/, '') || '/';
+      errorMap.set(errorPath, path.join(appDir, file));
     }
   }
 
@@ -186,6 +233,8 @@ export async function scanRoutes(
       isCatchAll,
       isOptionalCatchAll,
       layouts: type === 'page' ? findLayouts(urlPath, layoutMap) : [],
+      loading: type === 'page' ? findLoading(urlPath, loadingMap) : undefined,
+      error: type === 'page' ? findError(urlPath, errorMap) : undefined,
     };
 
     routes.push(route);

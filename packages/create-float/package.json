@@ -1,6 +1,6 @@
 {
   "name": "create-float",
-  "version": "2.0.3",
+  "version": "2.2.0",
   "description": "Create Float.js applications with one command",
   "type": "module",
   "bin": {

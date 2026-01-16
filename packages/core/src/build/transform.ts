@@ -7,6 +7,7 @@ import * as esbuild from 'esbuild';
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { getCache } from './persistent-cache.js';
 
 // Module cache for dev mode
 const moduleCache = new Map<string, { module: any; mtime: number }>();
@@ -15,7 +16,7 @@ const moduleCache = new Map<string, { module: any; mtime: number }>();
  * Transform and import a file
  * Handles .ts, .tsx, .js, .jsx files
  */
-export async function transformFile(filePath: string): Promise<any> {
+export async function transformFile(filePath: string, useCache: boolean = true): Promise<any> {
   const absolutePath = path.isAbsolute(filePath) ? filePath : path.resolve(filePath);
   
   // Check if file exists
@@ -26,10 +27,39 @@ export async function transformFile(filePath: string): Promise<any> {
   const stats = fs.statSync(absolutePath);
   const mtime = stats.mtimeMs;
 
-  // Check cache
+  // Check in-memory cache
   const cached = moduleCache.get(absolutePath);
   if (cached && cached.mtime === mtime) {
     return cached.module;
+  }
+
+  // Check persistent cache if enabled
+  if (useCache) {
+    const cache = getCache();
+    const source = fs.readFileSync(absolutePath, 'utf-8');
+    const sourceHash = require('crypto').createHash('sha256').update(source).digest('hex').slice(0, 16);
+    const cacheKey = `transform_${absolutePath}_${sourceHash}`;
+    
+    if (cache.has(cacheKey)) {
+      const cachedCode = cache.get<string>(cacheKey);
+      if (cachedCode) {
+        // Create temp file and import
+        const tempDir = path.join(process.cwd(), '.float', '.cache');
+        fs.mkdirSync(tempDir, { recursive: true });
+        const tempFile = path.join(tempDir, `${path.basename(absolutePath, path.extname(absolutePath))}_${Date.now()}.mjs`);
+        fs.writeFileSync(tempFile, cachedCode);
+        
+        try {
+          const module = await import(pathToFileURL(tempFile).href);
+          moduleCache.set(absolutePath, { module, mtime });
+          setImmediate(() => { try { fs.unlinkSync(tempFile); } catch {} });
+          return module;
+        } catch (error) {
+          // Cache invalid, continue with transformation
+          setImmediate(() => { try { fs.unlinkSync(tempFile); } catch {} });
+        }
+      }
+    }
   }
 
   // Read source
@@ -67,6 +97,14 @@ export async function transformFile(filePath: string): Promise<any> {
     
     // Cache the result
     moduleCache.set(absolutePath, { module, mtime });
+    
+    // Save to persistent cache if enabled
+    if (useCache) {
+      const cache = getCache();
+      const sourceHash = require('crypto').createHash('sha256').update(source).digest('hex').slice(0, 16);
+      const cacheKey = `transform_${absolutePath}_${sourceHash}`;
+      cache.set(cacheKey, code, source);
+    }
     
     // Clean up temp file (async)
     setImmediate(() => {
